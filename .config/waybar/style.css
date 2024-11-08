@@ -1,0 +1,8 @@
+/* --- Import main styles --- */
+@import 'styles/main.css';
+
+/* --- Colour selection --- */
+@import 'colours/Everforest.css';
+
+/* --- Style selection --- */
+@import 'styles/floating.css';

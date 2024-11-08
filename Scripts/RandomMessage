@@ -1,0 +1,10 @@
+#!/bin/bash
+
+msgFile=~/Scripts/Messages/Everforest
+
+randNum=$(echo $(( $RANDOM % 8 + 1 )))
+
+text="\" $(sed "${randNum}!d" $msgFile) \""
+
+sed -i "s/.*title.*/title = $text/" ~/.config/macchina/themes/Theme.toml
+

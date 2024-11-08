@@ -1,0 +1,292 @@
+#!/bin/bash
+
+# ==== Adding a theme ==== #
+
+# Modify argument check
+# Define theme variables
+# Add wallpaper
+# Add waybar colour css file
+# Add gtk and kvantum themes
+# Add icon and cursor themes
+# Add kitty colour file
+# Add swaync theme
+# Add rofi theme
+# Add Hyprlock theme
+# Add neovim theme
+# Add macchina messages
+
+
+# ==== Check for valid arguments ==== #
+
+echo ''
+if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 4 ]]; then  # True if arg is not an int between 0 and 4
+  echo 'Syntax: SetTheme <option>'
+  echo 'Options:'
+  echo '1. Everforest'
+  echo '2. Catppuccin Mocha'
+  echo '3. Rose Pine'
+  if [[ $1 == '-h' ]] || [[ $1 == '--help' ]]; then
+    exit 0
+  else
+    exit 1
+  fi
+fi
+
+
+# ==== Common ==== #
+
+if [[ $1 -eq 1 ]]; then
+  theme='Everforest'
+  icons='Everforest-Dark'
+  cursors='everforest-cursors'
+  accent='A7C080'
+  wall="$HOME/Hyprland-Dots/Wallpapers/Everforest/Hard.jpg"
+elif [[ $1 -eq 2 ]]; then
+  theme='CatMocha'
+  icons='Papirus-Dark'
+  cursors='catppuccin-cursors'
+  accent='B4BEFE'
+  wall="$HOME/Hyprland-Dots/Wallpapers/Catppuccin/Crust.jpg"
+elif [[ $1 -eq 3 ]]; then
+  theme='Rose-Pine'
+  icons='Rose-Pine'
+  cursors='rose-pine-cursors'
+  accent='9ccfd8'
+  wall="$HOME/Hyprland-Dots/Wallpapers/Rose-Pine/Base.png"
+fi
+
+prompt() {
+  # Syntax: prompt-text default
+
+  local prompt default input output
+  prompt=$1
+  default=$(echo "$2" | tr '[:upper:]' '[:lower:]')
+  read -p "$prompt" input
+  input=$(echo "$input" | tr '[:upper:]' '[:lower:]')
+
+  if [[ $input == 'y' || ( -z $input && $default == 'y' ) ]]; then
+    output=true
+  elif [[ $input == 'n' || ( -z $input && $default == 'n' ) ]]; then
+    output=false
+  else
+    if [[ $default == 'y' ]]; then output=true; else output=false; fi
+  fi
+  echo "$output"
+}
+
+changeWall=$(prompt 'Change wallpaper? (y/N) ' 'n')
+lightCurs=$(prompt 'Enable light cursors? (y/N) ' 'n')
+colourful=$(prompt 'Enable colourful Waybar? (y/N) ' 'n')
+floating=$(prompt 'Enable floating Waybar? (Y/n) ' 'y')
+
+
+# ==== Hyprpaper ==== #
+if [[ "$changeWall" == 'true' ]]; then
+  echo 'Setting wallpaper...'
+  echo "preload = $wall"     > $HOME/.config/hypr/hyprpaper.conf
+  echo "wallpaper = ,$wall" >> $HOME/.config/hypr/hyprpaper.conf
+  echo "splash = false"     >> $HOME/.config/hypr/hyprpaper.conf
+  echo ''                   >> $HOME/.config/hypr/hyprpaper.conf
+fi
+sleep 0.05
+
+
+# ==== Waybar ==== #
+echo 'Setting Waybar theme...'
+
+echo '/* --- Import main styles --- */'  > $HOME/.config/waybar/style.css
+echo "@import 'styles/main.css';"       >> $HOME/.config/waybar/style.css
+echo ''                                 >> $HOME/.config/waybar/style.css
+echo '/* --- Colour selection --- */'   >> $HOME/.config/waybar/style.css
+echo "@import 'colours/$theme.css';"    >> $HOME/.config/waybar/style.css
+echo ''                                 >> $HOME/.config/waybar/style.css
+echo '/* --- Style selection --- */'    >> $HOME/.config/waybar/style.css
+
+if [[ "$floating" == 'true' ]]; then
+  echo "@import 'styles/floating.css';" >> $HOME/.config/waybar/style.css
+fi
+
+if [[ "$colourful" == 'true' ]]; then
+  echo "@import 'styles/colourful.css';" >> $HOME/.config/waybar/style.css
+fi
+
+sleep 0.05
+
+
+# ==== GTK theme + icons ==== #
+if [[ "$lightCurs" == 'true' ]]; then
+  cursors=$(echo "${cursors}-light")
+fi
+
+echo 'Setting GTK theme, icons & cursors...'
+if [[ -e $HOME/.config/gtk-3.0/settings.ini ]]; then
+  sed -i "s/.*gtk-theme-name.*/gtk-theme-name=$theme/" $HOME/.config/gtk-3.0/settings.ini
+  sed -i "s/.*gtk-icon-theme-name.*/gtk-icon-theme-name=$icons/" $HOME/.config/gtk-3.0/settings.ini
+  sed -i "s/.*gtk-cursor-theme-name.*/gtk-cursor-theme-name=$cursors/" $HOME/.config/gtk-3.0/settings.ini
+fi
+if [[ -e $HOME/.config/gtk-4.0/settings.ini ]]; then
+  sed -i "s/.*gtk-theme-name.*/gtk-theme-name=$theme/" $HOME/.config/gtk-4.0/settings.ini
+  sed -i "s/.*gtk-icon-theme-name.*/gtk-icon-theme-name=$icons/" $HOME/.config/gtk-4.0/settings.ini
+  sed -i "s/.*gtk-cursor-theme-name.*/gtk-cursor-theme-name=$cursors/" $HOME/.config/gtk-4.0/settings.ini
+fi
+
+if [[ ! -d $HOME/.icons ]]; then
+  mkdir $HOME/.icons
+fi
+
+echo '[Icon Theme]'       > $HOME/.icons/default/index.theme
+echo 'Name=Default'      >> $HOME/.icons/default/index.theme
+echo "Inherits=$cursors" >> $HOME/.icons/default/index.theme
+echo ''                  >> $HOME/.icons/default/index.theme
+
+hyprctl setcursor $cursors 32 > /dev/null 2>&1
+gsettings set org.gnome.desktop.interface cursor-theme "$cursors"
+gsettings set org.gnome.desktop.interface gtk-theme "$theme"
+gsettings set org.gnome.desktop.interface icon-theme "$icons"
+
+# Libadwaita
+if [[ -e $HOME/.config/gtk-4.0/gtk.css ]]; then
+  rm $HOME/.config/gtk-4.0/gtk.css
+fi
+if [[ -e $HOME/.config/gtk-4.0/gtk-dark.css ]]; then
+  rm $HOME/.config/gtk-4.0/gtk-dark.css
+fi
+if [[ -e $HOME/.config/gtk-4.0/assets ]]; then
+  rm -r $HOME/.config/gtk-4.0/assets  # -r is just in case it's not a symlink already (is a directory)
+fi
+
+ln -s $HOME/.themes/$theme/gtk-4.0/gtk-dark.css $HOME/.config/gtk-4.0
+ln -s $HOME/.themes/$theme/gtk-4.0/gtk.css $HOME/.config/gtk-4.0
+ln -s $HOME/.themes/$theme/gtk-4.0/assets $HOME/.config/gtk-4.0
+
+# Envvars
+if [[ -e $HOME/.config/hypr/envvars.conf ]]; then
+  if grep -q GTK_THEME $HOME/.config/hypr/envvars.conf; then
+    sed -i "s/.*GTK_THEME.*/env = GTK_THEME,$theme:dark/" $HOME/.config/hypr/envvars.conf
+  else
+    echo "env = GTK_THEME,$theme:dark" >> $HOME/.config/hypr/envvars.conf
+  fi
+
+  if grep -q HYPRCURSOR_THEME $HOME/.config/hypr/envvars.conf; then
+    sed -i "s/.*HYPRCURSOR_THEME.*/env = HYPRCURSOR_THEME,$cursors/" $HOME/.config/hypr/envvars.conf
+  else
+    echo "env = HYPRCURSOR_THEME,$cursors" >> $HOME/.config/hypr/envvars.conf
+  fi
+
+  if grep -q XCURSOR_THEME $HOME/.config/hypr/envvars.conf; then
+    sed -i "s/.*XCURSOR_THEME.*/env = XCURSOR_THEME,$cursors/" $HOME/.config/hypr/envvars.conf
+  else
+    echo "env = XCURSOR_THEME,$cursors" >> $HOME/.config/hypr/envvars.conf
+  fi
+fi
+
+sleep 0.05
+
+
+# ==== Kvantum ==== #
+echo 'Setting Kvantum theme...'
+echo '[General]'     > $HOME/.config/Kvantum/kvantum.kvconfig
+echo "theme=$theme" >> $HOME/.config/Kvantum/kvantum.kvconfig
+sleep 0.05
+
+
+# ==== Qt icons ==== #
+echo 'Setting QT icon theme...'
+sed -i "s/.*icon_theme.*/icon_theme=$icons/" $HOME/.config/qt5ct/qt5ct.conf
+sed -i "s/.*icon_theme.*/icon_theme=$icons/" $HOME/.config/qt6ct/qt6ct.conf
+
+
+# ==== Kitty ==== #
+echo 'Setting Kitty theme...'
+
+cat < $HOME/.config/kitty/main    > $HOME/.config/kitty/kitty.conf  # > overwrites whole file
+cat < $HOME/.config/kitty/$theme >> $HOME/.config/kitty/kitty.conf  # >> appends to file
+sleep 0.05
+
+
+# ==== Macchina ==== #
+echo 'Setting Macchina theme...'
+sed -i "s/.*key_color.*/key_color = \"#$accent\"/" $HOME/.config/macchina/themes/Theme.toml
+sed -i "s/.*separator_color.*/separator_color = \"#$accent\"/" $HOME/.config/macchina/themes/Theme.toml
+sed -i "s/.*msgFile=.*/msgFile=~\/Scripts\/Messages\/$theme/" $HOME/Scripts/RandomMessage
+# The above replace the entire line that contains the first string with the second string
+sleep 0.05
+
+
+# ==== Cava ====
+echo 'Setting Cava theme...'
+sed -i "s/.*foreground.*/foreground = '#$accent'/" ~/.config/cava/config
+sleep 0.05
+
+
+# ==== Swaync ==== #
+echo 'Setting Swaync theme...'
+cd $HOME/.config/swaync  # So that symlink can use ./
+if [[ -e ./style.css ]]; then  # -e checks if file exsists
+  rm ./style.css
+fi
+ln -s ./$theme.css ./style.css
+sleep 0.05
+
+
+# ==== Rofi ==== #
+echo 'Setting Rofi theme...'
+echo "@theme \"~/.config/rofi/$theme.rasi\"" > $HOME/.config/rofi/config.rasi
+sleep 0.05
+
+
+# ==== Neovim ==== #
+if [[ -d $HOME/.config/nvim/lua/plugins ]]; then
+  cd $HOME/.config/nvim/lua/plugins
+  if [[ -e ./Theme.lua ]]; then
+    rm ./Theme.lua
+  fi
+  ln -s ./$theme ./Theme.lua
+else
+  echo 'lazy.nvim not found, please set Neovim theme manually.'
+fi
+
+
+# ==== Hyprlock ==== #
+echo 'Setting Hyprlock theme...'
+cd $HOME/.config/hypr
+if [[ -e ./hyprlock.conf ]]; then
+  rm ./hyprlock.conf
+fi
+ln -s ./hyprlock/$theme.conf ./hyprlock.conf
+sleep 0.05
+
+
+# ==== Hyprland ==== #
+echo 'Setting Hyprland theme...'
+sed -i "s/.*col.active_border.*/    col.active_border = 0xff$accent/" ~/.config/hypr/hyprland/customisation.conf
+sleep 0.05
+
+
+# ==== Finish up ==== #
+echo 'Reloading Waybar...'
+killall waybar > /dev/null 2>&1  # Output gets deleted
+nohup waybar > /dev/null 2>&1 &  # & will stop script from waiting
+sleep 0.05
+echo 'Reloading Swaync...'
+swaync-client -rs > /dev/null 2>&1 &
+sleep 0.05
+echo 'Reloading Hyprland...'
+hyprctl reload > /dev/null 2>&1 &
+sleep 0.05
+echo 'Reloading Hyprpaper...'
+killall hyprpaper > /dev/null 2>&1
+nohup hyprpaper > /dev/null 2>&1 &
+sleep 0.05
+echo 'Reloading Kitty...'
+for pid in $(pidof kitty); do
+  kill -SIGUSR1 $pid > /dev/null 2>&1 &
+done
+echo 'Reloading Cava...'
+for pid in $(pidof cava); do
+  kill -SIGUSR1 $pid > /dev/null 2>&1 &
+done
+
+echo 'Done! Reboot may be required for some changes to take effect.'
+exit 0
+

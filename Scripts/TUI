@@ -1,0 +1,171 @@
+#!/bin/bash
+
+# This script is a fun proof of concept for the most part.
+# It's not very well optimised (though I'm working on that)
+# and Bash just isn't the best for a TUI.
+
+# All that is here is some functions. The script does nothing alone.
+# It's intended to be used like a library. Just source it in another file.
+
+
+# Output highlighted text
+printh() {
+  if [[ -n $2 ]]; then
+    args=(setab $2)  # Set highlight colour
+  fi
+  if [[ -n $3 ]]; then
+    args+=(setaf $3)  # Set text colour
+  fi
+  if [[ $2 -lt 0 ]]; then
+    smso=''
+  else
+    smso=$(tput smso ${args[*]})  # For highlighting and text colour
+  fi
+
+  printf "%s" "${smso}${1}"
+  if [[ ! $4 == true ]]; then
+    printf "$(tput sgr0)"  # Reset formatting if $4 is not true
+  fi
+}
+
+
+
+refresh() {
+  # syntax: page-title option1-title option1-command option2-title option2-command etc.
+  # The commands do not need to be passed in as they aren't used here but it's just easier to pass them in than to not
+
+  tput reset  # Clear the terminal
+
+
+  # ---- Define variables ----
+  local maxBoxWidth=160
+  local maxBoxHeight=$((40 + $optionCount))
+
+  if [[ $COLUMNS -ge $maxBoxWidth ]]; then
+    local boxWidth=$maxBoxWidth
+  else
+    local boxWidth=$COLUMNS
+  fi
+
+  if [[ $LINES -ge $maxBoxHeight ]]; then
+    local boxHeight=$maxBoxHeight
+  else
+    local boxHeight=$LINES
+  fi
+
+  local leadingColumns=$((($COLUMNS - $boxWidth) / 2))  # Does floor rounding
+  local leadingColumns=$(for i in $(seq $leadingColumns); do printf ' '; done)
+
+  local leadingLines=$((($LINES - $boxHeight) / 2))
+  for i in $(seq $leadingLines); do printf '\n'; done
+
+
+  # ---- Draw top of box with title ----
+  local spaceCount=$(($boxWidth - ${#pageTitle} - 4))  # width - length of title - (box sides + spaces on sides of title)
+  local line=$(for i in $(seq $(($spaceCount / 2))); do printf '─'; done)  # This is not a dash
+
+  printf "${leadingColumns}┌"
+
+  printf "$line"
+  printf "$(tput bold) $pageTitle $(tput sgr0)"  # Print title in bold
+  printf "$line"
+
+  if [[ ( $(($boxWidth % 2)) -eq 0 && $((${#pageTitle} % 2)) -eq 1 ) || ( $(($boxWidth % 2)) -eq 1 && $((${#pageTitle} % 2)) -eq 0 ) ]]; then
+    printf '─'  # Extra '─' if the title cannot be truly centred
+  fi
+  printf '┐\n'
+
+
+  # ---- Draw box sides with no content ----
+  local spaceCount=$(($boxWidth - 2))
+
+  for i in $(seq $(($boxHeight-$optionCount-2))); do  # height - num of options - top and bottom row
+    printf "${leadingColumns}│"
+    printf "\e[${spaceCount}C"
+    printf '│\n'
+  done
+
+
+  # ---- Draw options ----
+  for i in $(seq 0 2 $(($optionCount * 2 - 2))); do  # start at 0, increment by 2, stop at double the option count
+
+    # Calculate spaces starting with spaces in between box sides then subtracting the length of option title
+    # then subtracting the following '. ' then subtracting the number in front e.g. '2'
+    local optNumber=$(($i / 2 + 1))
+    local spaceCount=$(($spaceCount - ${#options[$i]} - 2 - ${#optNumber}))
+    local spaces=$(for i in $(seq $(($spaceCount))); do printf ' '; done)
+
+    printf "${leadingColumns}│"
+    if [[ $(($i / 2)) -eq $option ]]; then
+      printh "${optNumber}. ${options[$i]}" 7 0 true  # Print highlighted text for selected option
+      printh "$spaces" -1 -1 true  # true stops it from automatically resetting and -1 stops it from running tput every time to make it much print faster
+      printf "$(tput sgr0)"  # Reset so that other text isn't highlighted
+    else
+      printf "${optNumber}. ${options[$i]}"
+      printf "$spaces"
+    fi
+    printf '│\n'
+    spaceCount=$(($boxWidth - 2))  # Reset $spaceCount
+  done
+
+
+  # ---- Draw bottom of box ----
+  printf "${leadingColumns}└"
+  for i in $(seq $(($boxWidth-2))); do printf '─'; done
+  printf '┘'
+}
+
+
+
+dialog() {
+  # syntax: page-title option1-title option1-command option2-title option2-command etc.
+
+
+  # ---- Check for invalid no. of args ----
+  if [[ $(($# % 2)) -eq 0 ]] || [[ $# -eq 1 ]]; then
+    local errDetails=($(caller))
+    echo "${errDetails[1]}: line ${errDetails[0]}: dialog: invalid number of arguments"
+    exit 1
+  fi
+
+
+  # ---- Define variables ----
+  pageTitle=$1
+  optionCount=$((($#-1)/2))
+  option=0  # 0 is option 1
+  options=("$@")
+  options=("${options[@]:1}")  # Remove first element
+  # $options now contains pairs of option title and command
+
+
+  # ---- Main loop ----
+  while true; do
+    if [[ $noRefresh != true ]]; then
+      refresh "$@"  # Pass all arguments into refresh function
+    fi
+    noRefresh=false
+
+    read -rsn1 mode  # get 1 character
+    if [[ $mode == $(printf "\u1b") ]]; then
+      read -rsn2 mode  # read 2 more chars for arrow keys
+    fi
+
+    case $mode in
+      '[D' | '[A') if [[ $option -gt 0 ]]; then option=$(($option-1)); else noRefresh=true; fi ;;  # Left/Up
+      '[C' | '[B') if [[ $option -lt $(($optionCount - 1)) ]]; then option=$(($option+1)); else noRefresh=true; fi ;;  # Right/Down
+      '1'        ) if [[ $optionCount -ge 1 ]]; then option=0; else noRefresh=true; fi ;;
+      '2'        ) if [[ $optionCount -ge 2 ]]; then option=1; else noRefresh=true; fi ;;
+      '3'        ) if [[ $optionCount -ge 3 ]]; then option=2; else noRefresh=true; fi ;;
+      '4'        ) if [[ $optionCount -ge 4 ]]; then option=3; else noRefresh=true; fi ;;
+      '5'        ) if [[ $optionCount -ge 5 ]]; then option=4; else noRefresh=true; fi ;;
+      '6'        ) if [[ $optionCount -ge 6 ]]; then option=5; else noRefresh=true; fi ;;
+      '7'        ) if [[ $optionCount -ge 7 ]]; then option=6; else noRefresh=true; fi ;;
+      '8'        ) if [[ $optionCount -ge 8 ]]; then option=7; else noRefresh=true; fi ;;
+      '9'        ) if [[ $optionCount -ge 9 ]]; then option=8; else noRefresh=true; fi ;;
+      ''         ) tput reset; eval "${options[$(($option * 2 + 1))]}"; break ;;  # Select (Return/Space)
+      # eval treats strings as shell code so the above will run the command that corresponds to the active option
+      *          ) >&2 noRefresh=true ;;  # Do nothing if invalid key
+    esac
+  done
+}
+
