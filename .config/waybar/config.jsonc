@@ -36,25 +36,25 @@
   "custom/shutdown": {
     "format": "  ",
     "tooltip": false,
-    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -s"
+    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -s"
   },
 
   "custom/reboot": {
     "format": "  ",
     "tooltip": false,
-    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -r"
+    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -r"
   },
 
   "custom/logout": {
     "format": "  ",
     "tooltip": false,
-    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -l"
+    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -l"
   },
 
   "custom/firmware": {
     "format": "  ",
     "tooltip": false,
-    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -f"
+    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -f"
   },
 
   "custom/suspend": {
@@ -195,8 +195,10 @@
     }
   },
 
+
+
   "backlight": {
-    "exec": "$HOME/.config/waybar/scripts/backlight.sh",
+    "exec": "command -v $HOME/.config/waybar/scripts/backlight.sh && $HOME/.config/waybar/scripts/backlight.sh",
     "interval": 5,
     "tooltip": false,
     "on-scroll-up": "brightnessctl set +10%",
@@ -204,7 +206,7 @@
     "on-click": "brightnessctl set 50%" // Réinitialiser à 50% au clic
   },
   "custom/audio-icon": {
-    "exec": "$HOME/.config/waybar/scripts/volume.sh",
+    "exec": "command -v $HOME/.config/waybar/scripts/volume.sh && $HOME/.config/waybar/scripts/volume.sh",
     "interval": 5,
     "tooltip": false
   },
