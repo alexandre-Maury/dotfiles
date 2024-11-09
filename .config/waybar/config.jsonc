@@ -1,6 +1,6 @@
 {
   "layer": "top",
-    "modules-left": ["custom/apps", "hyprland/workspaces"],
+    "modules-left": ["custom/workspaces-left-end", "hyprland/workspaces"],
     "modules-center": ["hyprland/window"],
     "modules-right": ["custom/power-left-end", "group/power", "custom/tray-left-end", "group/sys-tray", "custom/audio-icon", "pulseaudio", "custom/clock-icon", "clock", "custom/notifications"],
     "custom/apps": {
@@ -89,7 +89,10 @@
         "custom/divider"
       ]
     },
-
+    "custom/workspaces-left-end": {
+      "format": " ",
+      "tooltip": false
+    },
     "hyprland/workspaces": {
       "active-only": false,
       "format": "{icon}",
