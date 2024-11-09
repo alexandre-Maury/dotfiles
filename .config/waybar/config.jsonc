@@ -1,158 +1,233 @@
 {
   "layer": "top",
-    "modules-left": ["custom/workspaces-left-end", "hyprland/workspaces"],
-    "modules-center": ["custom/clock-icon", "clock"],
-    "modules-right": ["custom/tray-left-end", "group/sys-tray", "custom/audio-icon", "pulseaudio", "custom/power-left-end", "group/power", "custom/notifications"],
-    "custom/apps": {
-      "format": " 󰣇 ",
-      "tooltip": false,
-      "on-click": "rofi -show drun -disable-history"
-    },
+  "modules-left": ["custom/workspaces-left-end", "hyprland/workspaces"],
+  "modules-center": ["custom/clock-icon", "clock"],
+  "modules-right": [
+    "custom/tray-left-end", 
+    "group/sys-tray", 
+    "group/audio-backlight",
+    "group/system",
+    "custom/power-left-end", 
+    "group/power", 
+    "custom/notifications"
+  ],
 
-    "custom/notifications": {
-      "tooltip": false,
-      "format": " {icon} ",
-      "format-icons": {
-        "notification": "",
-        "none": "",
-        "dnd-notification": "",
-        "dnd-none": "",
-        "inhibited-notification": "",
-        "inhibited-none": "",
-        "dnd-inhibited-notification": "",
-        "dnd-inhibited-none": ""
-      },
+  "custom/notifications": {
+    "tooltip": false,
+    "format": " {icon} ",
+    "format-icons": {
+      "notification": "",
+      "none": "",
+      "dnd-notification": "",
+      "dnd-none": "",
+      "inhibited-notification": "",
+      "inhibited-none": "",
+      "dnd-inhibited-notification": "",
+      "dnd-inhibited-none": ""
+    },
+    "return-type": "json",
+    "exec-if": "command -v swaync-client",
+    "exec": "swaync-client -swb",
+    "on-click": "swaync-client -t -sw",
+    "on-click-right": "swaync-client -d -sw",
+    "escape": true
+  },
 
-      "return-type": "json",
-      "exec-if": "which swaync-client",
-      "exec": "swaync-client -swb",
-      "on-click": "swaync-client -t -sw",
-      "on-click-right": "swaync-client -d -sw",
-      "escape": true
-    },
+  "custom/shutdown": {
+    "format": "  ",
+    "tooltip": false,
+    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -s"
+  },
 
-    "custom/shutdown": {
-      "format": "    ",
-      "tooltip": false,
-      "on-click": "$HOME/Scripts/Power/Power -s"
-    },
+  "custom/reboot": {
+    "format": "  ",
+    "tooltip": false,
+    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -r"
+  },
 
-    "custom/reboot": {
-      "format": "  ",
-      "tooltip": false,
-      "on-click": "$HOME/Scripts/Power/Power -r"
-    },
+  "custom/logout": {
+    "format": "  ",
+    "tooltip": false,
+    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -l"
+  },
 
-    "custom/logout": {
-      "format": "  ",
-      "tooltip": false,
-      "on-click": "$HOME/Scripts/Power/Power -l"
-    },
+  "custom/firmware": {
+    "format": "  ",
+    "tooltip": false,
+    "on-click": "command -v $HOME/Scripts/Power/Power && $HOME/Scripts/Power/Power -f"
+  },
 
-    "custom/firmware": {
-      "format": "  ",
-      "tooltip": false,
-      "on-click": "$HOME/Scripts/Power/Power -f"
-    },
+  "custom/suspend": {
+    "format": "  ",
+    "tooltip": false,
+    "on-click": "gtklock & sleep 1; systemctl suspend"
+  },
 
-    "custom/suspend": {
-      "format": "  ",
-      "tooltip": false,
-      "on-click": "gtklock & sleep 1; systemctl suspend"
-    },
+  "custom/divider": {
+    "format": "|",
+    "tooltip": false
+  },
 
-    "custom/divider": {
-      "format": "|",
-      "tooltip": "flase"
-    },
+  "custom/power-left-end": {
+    "format": " ",
+    "tooltip": false
+  },
 
-    "custom/power-left-end": {
-      "format": " ",
-      "tooltip": false
+  "group/power": {
+    "orientation": "horizontal",
+    "drawer": {
+      "transition-duration": 600,
+      "transition-left-to-right": false
     },
+    "modules": [
+      "custom/shutdown",
+      "custom/firmware",
+      "custom/divider",
+      "custom/suspend",
+      "custom/divider",
+      "custom/logout",
+      "custom/divider",
+      "custom/reboot",
+      "custom/divider"
+    ]
+  },
 
-    "group/power": {
-      "orientation": "horizontal",
-      "drawer": {
-        "transition-duration": 600,
-        "transition-left-to-right": false
-      },
-      "modules": [
-        "custom/shutdown",
-        "custom/firmware",
-        "custom/divider",
-        "custom/suspend",
-        "custom/divider",
-        "custom/logout",
-        "custom/divider",
-        "custom/reboot",
-        "custom/divider"
-      ]
-    },
-    "custom/workspaces-left-end": {
-      "format": " ",
-      "tooltip": false
-    },
-    "hyprland/workspaces": {
-      "active-only": false,
-      "format": "{icon}",
-      "tooltip": false,
-      "all-outputs": true,
-      "format-icons": {
-        "active": "",
-        "default": ""
-      },
-      "persistent-workspaces": {
-        "*": 5
-      }
-    },
+  "custom/workspaces-left-end": {
+    "format": " ",
+    "tooltip": false
+  },
 
-    "tray": {
-      "icon-size": 18,
-      "spacing": 12
+  "hyprland/workspaces": {
+    "active-only": false,
+    "format": "{icon}",
+    "tooltip": false,
+    "all-outputs": true,
+    "format-icons": {
+      "active": "",
+      "default": ""
     },
-
-    "custom/tray-collapsed": {
-      "format": "󰇙  ",
-      "tooltip": false
-    },
-
-    "custom/tray-left-end": {
-      "format": " ",
-      "tooltip": false
-    },
-
-    "group/sys-tray": {
-      "orientation": "horizontal",
-      "drawer": {
-        "transition-duration": 600,
-        "transition-left-to-right": false
-      },
-      "modules": [
-        "custom/tray-collapsed",
-        "tray"
-      ]
-    },
-
-    "custom/clock-icon": {
-      "format": " ",
-      "tooltip": false
-    },
-
-    "clock": {
-      "format": "{:%I:%M:%S %p} ",
-      "interval": 1
-    },
-
-    "custom/audio-icon": {
-      "exec": "$HOME/.config/waybar/scripts/volume",
-      "interval": 1,
-      "tooltip": false
-    },
-
-    "pulseaudio": {
-      "format": "{volume}% ",
-      "tooltip": false,
-      "scroll-step": 1
+    "persistent-workspaces": {
+      "*": 5
     }
+  },
+
+  "tray": {
+    "icon-size": 18,
+    "spacing": 12
+  },
+
+  "custom/tray-collapsed": {
+    "format": "󰇙  ",
+    "tooltip": false
+  },
+
+  "custom/tray-left-end": {
+    "format": " ",
+    "tooltip": false
+  },
+
+  "group/sys-tray": {
+    "orientation": "horizontal",
+    "drawer": {
+      "transition-duration": 600,
+      "transition-left-to-right": false
+    },
+    "modules": [
+      "custom/tray-collapsed",
+      "tray"
+    ]
+  },
+
+  "custom/clock-icon": {
+    "format": " ",
+    "tooltip": false
+  },
+
+  "clock": {
+    "format": "{:%I:%M:%S %p} ",
+    "interval": 1
+  },
+
+  "battery": {
+    "states": {
+      "good": 95,
+      "warning": 30,
+      "critical": 15
+    },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "{capacity}% ",
+    "format-plugged": "{capacity}% ",
+    "format-icons": ["", "", "", "", ""]
+  },
+  "memory": {
+    "format": "󰍛 {usage}%",
+    "format-alt": "󰍛 {used}/{total} GiB",
+    "interval": 5
+  },
+  "cpu": {
+    "format": "󰻠 {usage}%",
+    "format-alt": "󰻠 {avg_frequency} GHz",
+    "interval": 5
+  },
+  "disk": {
+    "format": "󰋊 {usage}%",
+    "format-alt": "󰋊 {used}/{total} GiB",
+    "interval": 5,
+    "path": "/mnt/Datos"
+  },
+  "network": {
+    "format-ethernet": "<span foreground='#7aa2f7' font='14.5' rise='-1000'> </span>{ipaddr}",
+    "format-linked": "<span foreground='#7aa2f7' font='14.5' rise='-1000'> </span>{ifname} (No IP)"
+  },
+  "group/system": {
+    "orientation": "horizontal",
+    "modules": [
+      "battery",
+      "memory",
+      "cpu",
+      "disk",
+      "network"
+    ],
+    "tooltip": false,
+    "drawer": {
+      "transition-duration": 500,
+      "transition-left-to-right": false
+    }
+  },
+
+  "backlight": {
+    "exec": "$HOME/.config/waybar/scripts/backlight.sh",
+    "interval": 5,
+    "tooltip": false,
+    "on-scroll-up": "brightnessctl set +10%",
+    "on-scroll-down": "brightnessctl set 10%-",
+    "on-click": "brightnessctl set 50%" // Réinitialiser à 50% au clic
+  },
+  "custom/audio-icon": {
+    "exec": "$HOME/.config/waybar/scripts/volume.sh",
+    "interval": 5,
+    "tooltip": false
+  },
+  "pulseaudio": {
+    "format": "{volume}% ",
+    "tooltip": false,
+    "scroll-step": 5,
+    "on-scroll-up": "pamixer --increase 5",
+    "on-scroll-down": "pamixer --decrease 5",
+    "on-click": "pamixer --toggle-mute"
+  },
+  "group/audio-backlight": {
+    "orientation": "horizontal",
+    "modules": [
+      "custom/audio-icon",
+      "pulseaudio",
+      "backlight"
+    ],
+    "tooltip": false,
+    "drawer": {
+      "transition-duration": 300,
+      "transition-left-to-right": false
+    }
+  }
+
 }
