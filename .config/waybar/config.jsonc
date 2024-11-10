@@ -198,7 +198,7 @@
 
 
   "backlight": {
-    "exec": "command -v $HOME/.config/waybar/scripts/backlight.sh && $HOME/.config/waybar/scripts/backlight.sh",
+    "exec": "$HOME/.config/waybar/scripts/backlight.sh",
     "interval": 5,
     "tooltip": false,
     "on-scroll-up": "brightnessctl set +10%",
@@ -206,7 +206,7 @@
     "on-click": "brightnessctl set 50%" // Réinitialiser à 50% au clic
   },
   "custom/audio-icon": {
-    "exec": "command -v $HOME/.config/waybar/scripts/volume.sh && $HOME/.config/waybar/scripts/volume.sh",
+    "exec": "$HOME/.config/waybar/scripts/volume.sh",
     "interval": 5,
     "tooltip": false
   },
