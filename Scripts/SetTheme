@@ -76,7 +76,7 @@ prompt() {
 changeWall=$(prompt "Changer le fond d'ecrans ? (y/N) " 'n')
 lightCurs=$(prompt "Activer les curseurs clairs ? (y/N) " 'n')
 colourful=$(prompt "Activer Waybar coloré ? (y/N) " 'n')
-floating=$(prompt "Activer Waybar coloré ? (y/N) " 'y')
+floating=$(prompt "Activer la barre de navigation flottante ? (y/N) " 'y')
 
 
 # ==== Hyprpaper ==== #
