@@ -1,33 +1,32 @@
 #!/bin/bash
 
-source $HOME/Scripts/TUI  # Import TUI functions
+source $HOME/Scripts/TUI  # Importer les fonctions TUI
 
-pkgManagement="dialog 'Package management' \
-  'Update' 'sudo pacman -Syu' \
-  'Install package' 'read -p \"Package(s) to install: \" -a packages; \
+pkgManagement="dialog 'Gestion des paquets' \
+  'Mettre à jour' 'sudo pacman -Syu' \
+  'Installer un paquet' 'read -p \"Paquet(s) à installer : \" -a packages; \
     sudo pacman -S \${packages[@]}' \
-  'Uninstall package' 'read -p \"Package(s) to remove: \" -a packages; \
+  'Désinstaller un paquet' 'read -p \"Paquet(s) à supprimer : \" -a packages; \
     sudo pacman -Rs \${packages[@]}' \
-  'Remove orphan packages' 'sudo pacman -Rns \$(pacman -Qtdq) || printf \"\e[A\033[2KNo orphan packages found.\n\"' \
-  'Clear package cache' 'yes | sudo pacman -Scc' \
-  'Update mirrors' 'echo \"Using config file: /etc/xdg/reflector/reflector.conf\"; sudo reflector @/etc/xdg/reflector/reflector.conf' \
-  'Back' 'prompt=false'"
+  'Supprimer les paquets orphelins' 'sudo pacman -Rns \$(pacman -Qtdq) || printf \"\e[A\033[2KAucun paquet orphelin trouvé.\n\"' \
+  'Vider le cache des paquets' 'yes | sudo pacman -Scc' \
+  'Mettre à jour les miroirs' 'echo \"Fichier de configuration utilisé : /etc/xdg/reflector/reflector.conf\"; sudo reflector @/etc/xdg/reflector/reflector.conf' \
+  'Retour' 'prompt=false'"
 
-themes="dialog 'Themes' \
-  'Set wallpaper' ' $HOME/Scripts/SetWall \$(( zenity --file-selection) 2>&1 | tail -n1)' \
+themes="dialog 'Thèmes' \
+  'Définir le fond d\'écran' ' $HOME/Scripts/SetWall \$(( zenity --file-selection) 2>&1 | tail -n1)' \
   'Everforest' '$HOME/Scripts/SetTheme 1' \
   'Catppuccin Mocha' '$HOME/Scripts/SetTheme 2' \
-  'Back' 'prompt=false'"
+  'Retour' 'prompt=false'"
 
 while true; do
   prompt=true
-  dialog 'Toolbox' \
-    'Package management' "$pkgManagement" \
-    'Themes' "$themes" \
-    'Exit' 'exit 0'
-  if [[ $prompt == true ]]; then printf '\n'; read -n 1 -srp 'Press any key to continue...'; fi
+  dialog 'Boîte à outils' \
+    'Gestion des paquets' "$pkgManagement" \
+    'Thèmes' "$themes" \
+    'Quitter' 'exit 0'
+  if [[ $prompt == true ]]; then printf '\n'; read -n 1 -srp 'Appuyez sur une touche pour continuer...'; fi
 done
 
-# Quotes in quotes are very confusing so this is a mess but it works
-# Also unfortunately comments in this massive block of chaos are likely to just make things more confusing
-
+# Les guillemets dans les guillemets sont assez déroutants, donc cela peut être un peu chaotique mais ça fonctionne
+# De plus, malheureusement, les commentaires dans ce bloc massif de code risquent de le rendre encore plus confus

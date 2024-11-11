@@ -91,7 +91,7 @@
           "custom/divider",
           "custom/traffic",
           "custom/divider",
-          "custom/addr",
+          "custom/addr"
 
         ]
    },
@@ -151,26 +151,26 @@
     "custom/shutdown": {
       "format": "  ",
       "tooltip": false,
-      "on-click": "$HOME/.config/waybar/scripts/power -s",
-      "on-click-right": "sh -c '(sleep 0.5s; wlogout --protocol layer-shell)' & disown", 
+      "on-click": "$HOME/.config/waybar/scripts/power.sh -s",
+      "on-click-right": "sh -c '(sleep 0.5s; wlogout --protocol layer-shell)' & disown" 
     },
 
     "custom/reboot": {
       "format": "   ",
       "tooltip": false,
-      "on-click": "$HOME/.config/waybar/scripts/power -r"
+      "on-click": "$HOME/.config/waybar/scripts/power.sh -r"
     },
 
     "custom/logout": {
       "format": "  ",
       "tooltip": false,
-      "on-click": "$HOME/.config/waybar/scripts/power -l"
+      "on-click": "$HOME/.config/waybar/scripts/power.sh -l"
     },
 
     "custom/firmware": {
       "format": "  ",
       "tooltip": false,
-      "on-click": "$HOME/.config/waybar/scripts/power -f"
+      "on-click": "$HOME/.config/waybar/scripts/power.sh -f"
     },
 
     "custom/suspend": {

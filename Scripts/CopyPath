@@ -1,25 +1,24 @@
 #!/bin/sh
 
 if [ "$#" -gt 1 ]; then
-	echo "Invalid number of arguments."
-	exit 1
+    echo "Nombre d'arguments invalide."
+    exit 1
 fi
 
 if [ ! -e "$1" ] && [ -n "$1" ]; then
-  echo "File or directory does not exsist at: $1"
-  exit 1
+    echo "Fichier ou répertoire inexistant à l'emplacement : $1"
+    exit 1
 fi
 
 if [ "$#" -eq 0 ]; then
-	path=$(pwd)
+    chemin=$(pwd)
 else
-	path=$(realpath $1)
+    chemin=$(realpath $1)
 fi
 
-wl-copy $path
+wl-copy $chemin
 
-echo 'Copied to clipboard:'
-echo $path
+echo 'Copié dans le presse-papiers :'
+echo $chemin
 
 exit 0
-

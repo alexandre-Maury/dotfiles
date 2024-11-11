@@ -1,26 +1,25 @@
 #!/bin/bash
 
-# ==== Adding a theme ==== #
+# ==== Ajouter un thème ==== #
 
-# Modify argument check
-# Define theme variables
-# Add wallpaper
-# Add waybar colour css file
-# Add gtk and kvantum themes
-# Add icon and cursor themes
-# Add kitty colour file
-# Add swaync theme
-# Add rofi theme
-# Add Hyprlock theme
-# Add neovim theme
-# Add macchina messages
+# Modifier la vérification des arguments
+# Définir les variables de thème
+# Ajouter un fond d'écran
+# Ajouter le fichier CSS de couleur pour Waybar
+# Ajouter les thèmes GTK et Kvantum
+# Ajouter les thèmes d'icônes et de curseur
+# Ajouter le fichier de couleur pour Kitty
+# Ajouter le thème de Swaync
+# Ajouter le thème de Rofi
+# Ajouter le thème de Hyprlock
+# Ajouter le thème de Neovim
+# Ajouter les messages Macchina
 
-
-# ==== Check for valid arguments ==== #
+# ==== Vérifier les arguments valides ==== #
 
 echo ''
-if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 4 ]]; then  # True if arg is not an int between 0 and 4
-  echo 'Syntax: SetTheme <option>'
+if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 4 ]]; then  # Vrai si l'argument n'est pas un entier entre 0 et 4
+  echo 'Syntaxe : SetTheme <option>'
   echo 'Options:'
   echo '1. Everforest'
   echo '2. Catppuccin Mocha'
@@ -33,30 +32,30 @@ if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 4 ]]; then  # True if arg is not an int betwe
 fi
 
 
-# ==== Common ==== #
+# ==== Commun ==== #
 
 if [[ $1 -eq 1 ]]; then
   theme='Everforest'
   icons='Everforest-Dark'
   cursors='everforest-cursors'
   accent='A7C080'
-  wall="$HOME/Hyprland-Dots/Wallpapers/Everforest/Hard.jpg"
+  wall="$HOME/.config/hypr/wallpapers/Everforest/Hard.jpg"
 elif [[ $1 -eq 2 ]]; then
   theme='CatMocha'
   icons='Papirus-Dark'
   cursors='catppuccin-cursors'
   accent='B4BEFE'
-  wall="$HOME/Hyprland-Dots/Wallpapers/Catppuccin/Crust.jpg"
+  wall="$HOME/.config/hypr/wallpapers/Catppuccin/Crust.jpg"
 elif [[ $1 -eq 3 ]]; then
   theme='Rose-Pine'
   icons='Rose-Pine'
   cursors='rose-pine-cursors'
   accent='9ccfd8'
-  wall="$HOME/Hyprland-Dots/Wallpapers/Rose-Pine/Base.png"
+  wall="$HOME/.config/hypr/wallpapers/Rose-Pine/Base.png"
 fi
 
 prompt() {
-  # Syntax: prompt-text default
+  # Syntaxe : prompt-texte par défaut
 
   local prompt default input output
   prompt=$1
@@ -74,15 +73,15 @@ prompt() {
   echo "$output"
 }
 
-changeWall=$(prompt 'Change wallpaper? (y/N) ' 'n')
-lightCurs=$(prompt 'Enable light cursors? (y/N) ' 'n')
-colourful=$(prompt 'Enable colourful Waybar? (y/N) ' 'n')
-floating=$(prompt 'Enable floating Waybar? (Y/n) ' 'y')
+changeWall=$(prompt "Changer le fond d'ecrans ? (y/N) " 'n')
+lightCurs=$(prompt "Activer les curseurs clairs ? (y/N) " 'n')
+colourful=$(prompt "Activer Waybar coloré ? (y/N) " 'n')
+floating=$(prompt "Activer Waybar coloré ? (y/N) " 'y')
 
 
 # ==== Hyprpaper ==== #
 if [[ "$changeWall" == 'true' ]]; then
-  echo 'Setting wallpaper...'
+  echo "Définir le fond d'écran..."
   echo "preload = $wall"     > $HOME/.config/hypr/hyprpaper.conf
   echo "wallpaper = ,$wall" >> $HOME/.config/hypr/hyprpaper.conf
   echo "splash = false"     >> $HOME/.config/hypr/hyprpaper.conf
@@ -92,15 +91,15 @@ sleep 0.05
 
 
 # ==== Waybar ==== #
-echo 'Setting Waybar theme...'
+echo "Définir le thème Waybar..."
 
-echo '/* --- Import main styles --- */'  > $HOME/.config/waybar/style.css
+echo '/* --- Importer les styles principaux --- */'  > $HOME/.config/waybar/style.css
 echo "@import 'styles/main.css';"       >> $HOME/.config/waybar/style.css
 echo ''                                 >> $HOME/.config/waybar/style.css
-echo '/* --- Colour selection --- */'   >> $HOME/.config/waybar/style.css
+echo '/* --- Sélection des couleurs --- */'   >> $HOME/.config/waybar/style.css
 echo "@import 'colours/$theme.css';"    >> $HOME/.config/waybar/style.css
 echo ''                                 >> $HOME/.config/waybar/style.css
-echo '/* --- Style selection --- */'    >> $HOME/.config/waybar/style.css
+echo '/* --- Sélection des styles --- */'    >> $HOME/.config/waybar/style.css
 
 if [[ "$floating" == 'true' ]]; then
   echo "@import 'styles/floating.css';" >> $HOME/.config/waybar/style.css
@@ -113,12 +112,12 @@ fi
 sleep 0.05
 
 
-# ==== GTK theme + icons ==== #
+# ==== Thème GTK + icônes ==== #
 if [[ "$lightCurs" == 'true' ]]; then
   cursors=$(echo "${cursors}-light")
 fi
 
-echo 'Setting GTK theme, icons & cursors...'
+echo 'Définir le thème GTK, les icônes & les curseurs...'
 if [[ -e $HOME/.config/gtk-3.0/settings.ini ]]; then
   sed -i "s/.*gtk-theme-name.*/gtk-theme-name=$theme/" $HOME/.config/gtk-3.0/settings.ini
   sed -i "s/.*gtk-icon-theme-name.*/gtk-icon-theme-name=$icons/" $HOME/.config/gtk-3.0/settings.ini
@@ -184,43 +183,42 @@ sleep 0.05
 
 
 # ==== Kvantum ==== #
-echo 'Setting Kvantum theme...'
+echo 'Définition du thème Kvantum...'
 echo '[General]'     > $HOME/.config/Kvantum/kvantum.kvconfig
 echo "theme=$theme" >> $HOME/.config/Kvantum/kvantum.kvconfig
 sleep 0.05
 
 
 # ==== Qt icons ==== #
-echo 'Setting QT icon theme...'
+echo 'Définition du thème des icônes QT...'
 sed -i "s/.*icon_theme.*/icon_theme=$icons/" $HOME/.config/qt5ct/qt5ct.conf
 sed -i "s/.*icon_theme.*/icon_theme=$icons/" $HOME/.config/qt6ct/qt6ct.conf
 
 
 # ==== Kitty ==== #
-echo 'Setting Kitty theme...'
-
+echo 'Définition du thème Kitty...'
 cat < $HOME/.config/kitty/main    > $HOME/.config/kitty/kitty.conf  # > overwrites whole file
 cat < $HOME/.config/kitty/$theme >> $HOME/.config/kitty/kitty.conf  # >> appends to file
 sleep 0.05
 
 
 # ==== Macchina ==== #
-echo 'Setting Macchina theme...'
+echo 'Définition du thème Macchina...'
 sed -i "s/.*key_color.*/key_color = \"#$accent\"/" $HOME/.config/macchina/themes/Theme.toml
 sed -i "s/.*separator_color.*/separator_color = \"#$accent\"/" $HOME/.config/macchina/themes/Theme.toml
 sed -i "s/.*msgFile=.*/msgFile=~\/Scripts\/Messages\/$theme/" $HOME/Scripts/RandomMessage
-# The above replace the entire line that contains the first string with the second string
+# Les lignes ci-dessus remplacent toute ligne contenant la première chaîne par la seconde
 sleep 0.05
 
 
 # ==== Cava ====
-echo 'Setting Cava theme...'
+echo 'Définition du thème Cava...'
 sed -i "s/.*foreground.*/foreground = '#$accent'/" ~/.config/cava/config
 sleep 0.05
 
 
 # ==== Swaync ==== #
-echo 'Setting Swaync theme...'
+echo 'Définition du thème Swaync...'
 cd $HOME/.config/swaync  # So that symlink can use ./
 if [[ -e ./style.css ]]; then  # -e checks if file exsists
   rm ./style.css
@@ -230,7 +228,7 @@ sleep 0.05
 
 
 # ==== Rofi ==== #
-echo 'Setting Rofi theme...'
+echo 'Définition du thème Rofi...'
 echo "@theme \"~/.config/rofi/$theme.rasi\"" > $HOME/.config/rofi/config.rasi
 sleep 0.05
 
@@ -243,12 +241,12 @@ if [[ -d $HOME/.config/nvim/lua/plugins ]]; then
   fi
   ln -s ./$theme ./Theme.lua
 else
-  echo 'lazy.nvim not found, please set Neovim theme manually.'
+  echo 'lazy.nvim introuvable, veuillez définir le thème de Neovim manuellement.'
 fi
 
 
 # ==== Hyprlock ==== #
-echo 'Setting Hyprlock theme...'
+echo 'Définition du thème Hyprlock...'
 cd $HOME/.config/hypr
 if [[ -e ./hyprlock.conf ]]; then
   rm ./hyprlock.conf
@@ -258,35 +256,35 @@ sleep 0.05
 
 
 # ==== Hyprland ==== #
-echo 'Setting Hyprland theme...'
+echo 'Définition du thème Hyprland...'
 sed -i "s/.*col.active_border.*/    col.active_border = 0xff$accent/" ~/.config/hypr/hyprland/customisation.conf
 sleep 0.05
 
 
-# ==== Finish up ==== #
-echo 'Reloading Waybar...'
+# ==== Finalisation ==== #
+echo 'Rechargement de Waybar...'
 killall waybar > /dev/null 2>&1  # Output gets deleted
 nohup waybar > /dev/null 2>&1 &  # & will stop script from waiting
 sleep 0.05
-echo 'Reloading Swaync...'
+echo 'Rechargement de Swaync...'
 swaync-client -rs > /dev/null 2>&1 &
 sleep 0.05
-echo 'Reloading Hyprland...'
+echo 'Rechargement de Hyprland...'
 hyprctl reload > /dev/null 2>&1 &
 sleep 0.05
-echo 'Reloading Hyprpaper...'
+echo 'Rechargement de Hyprpaper...'
 killall hyprpaper > /dev/null 2>&1
 nohup hyprpaper > /dev/null 2>&1 &
 sleep 0.05
-echo 'Reloading Kitty...'
+echo 'Rechargement de Kitty...'
 for pid in $(pidof kitty); do
   kill -SIGUSR1 $pid > /dev/null 2>&1 &
 done
-echo 'Reloading Cava...'
+echo 'Rechargement de Cava...'
 for pid in $(pidof cava); do
   kill -SIGUSR1 $pid > /dev/null 2>&1 &
 done
 
-echo 'Done! Reboot may be required for some changes to take effect.'
+echo 'Terminé ! Un redémarrage peut être nécessaire pour que certaines modifications prennent effet.'
 exit 0
 

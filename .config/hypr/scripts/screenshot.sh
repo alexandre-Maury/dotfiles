@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# ~/.config/hypr/hyprland/bind.conf
+
 time=$(date +%Y-%m-%d-%H-%M-%S)
 dir="$(xdg-user-dir PICTURES)/Screenshots"
 file="Screenshot_${time}_${RANDOM}.png"

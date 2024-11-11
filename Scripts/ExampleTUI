@@ -2,9 +2,10 @@
 
 source $HOME/Scripts/TUI
 
-dialog 'The Hello World Page' 'Option one' "notify-send 'Example TUI' 'Option one selected'"\
-  'Option two' "notify-send 'Example TUI' 'Option two selected'"\
-  'Option three' "notify-send 'Example TUI' 'Option three selected'"\
-  'Option four' "notify-send 'Example TUI' 'Option four selected'"
+dialog 'La page Bonjour Monde' 'Option un' "notify-send 'Exemple TUI' 'Option un sélectionnée'"\
+  'Option deux' "notify-send 'Exemple TUI' 'Option deux sélectionnée'"\
+  'Option trois' "notify-send 'Exemple TUI' 'Option trois sélectionnée'"\
+  'Option quatre' "notify-send 'Exemple TUI' 'Option quatre sélectionnée'"
 printf '\n'
+
 

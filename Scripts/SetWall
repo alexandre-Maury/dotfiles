@@ -1,25 +1,30 @@
 #!/bin/bash
 
+# Vérifie si un seul argument est passé
 if [ "$#" -ne 1 ]; then
-	echo "Invalid number of arguments."
-	exit 1
-fi
-
-if [ ! -f "$1" ]; then
-    echo "File does not exsist at: $1"
+    echo "Nombre d'arguments invalide."
     exit 1
 fi
 
+# Vérifie si le fichier spécifié existe
+if [ ! -f "$1" ]; then
+    echo "Le fichier n'existe pas à l'emplacement : $1"
+    exit 1
+fi
+
+# Récupère le chemin absolu du fichier
 wall=$(realpath $1)
 
+# Configure les paramètres de Hyprpaper
 echo "preload = $wall"     > $HOME/.config/hypr/hyprpaper.conf
 echo "wallpaper = ,$wall" >> $HOME/.config/hypr/hyprpaper.conf
 echo "splash = false"  >> $HOME/.config/hypr/hyprpaper.conf
 echo ""                >> $HOME/.config/hypr/hyprpaper.conf
 
+# Arrête Hyprpaper si il est déjà en cours d'exécution
 killall hyprpaper > /dev/null 2>&1
 
+# Redémarre Hyprpaper avec le nouveau fichier de configuration
 nohup hyprpaper -c $HOME/.config/hypr/hyprpaper.conf > /dev/null 2>&1 &
 
 exit 0
-
