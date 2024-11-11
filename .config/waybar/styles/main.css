@@ -1,8 +1,9 @@
 * {
   font-family: 'Cascadia Code','Symbols Nerd Font Mono';
   font-feature-settings: '"zero","ss01","ss02","ss03","ss04","ss05","cv31"';
-  font-size: 14px;
-  min-height: 35px
+  font-size: 12px;
+  min-height: 15px;
+  
 }
 
 window#waybar.empty #window {
@@ -10,31 +11,7 @@ window#waybar.empty #window {
   transition: none
 }
 
-#workspaces,#custom-notifications {
-  border-radius: 4px;
-  margin-bottom: 6px;
-  margin-right: 15px;
-  margin-top: 5px;
-  padding-left: 10px;
-  padding-right: 10px
-}
-
-#custom-workspaces-left-end,#custom-notifications {
-  font-size: 15px;
-  margin-left: 15px;
-}
-
-#custom-workspaces-left-end,#custom-notifications {
-  margin-left: 0;
-  margin-right: 12px
-}
-
-#workspaces,#clock,#pulseaudio { 
-  background: @bg-light
-}
-
 #workspaces button {
-  padding: 0 10px;
   color: @inactive;
 }
 
@@ -47,70 +24,57 @@ window#waybar.empty #window {
   text-shadow: inherit
 }
 
-#window,#tray {
-  background-color: @bg-light;
-  border-radius: 4px;
-  color: @fg;
-  margin-bottom: 6px;
-  margin-right: 15px;
-  margin-top: 5px;
-  padding-left: 10px;
-  padding-right: 10px
-}
-
-#tray {
-  border-radius: 0;
-  margin-right: 0
-}
-
-#custom-shutdown,#custom-logout,#custom-reboot,#custom-firmware,#custom-suspend,#custom-tray-collapsed,#clock,#pulseaudio,#custom-clock-icon,#custom-audio-icon {
-  margin-bottom: 6px;
-  margin-top: 5px;
-  padding-left: 10px;
-  padding-right: 10px
-}
-
-#custom-divider {
-  margin-bottom: 6px;
-  margin-top: 5px
-}
-
-#custom-shutdown,#custom-tray-collapsed,#clock,#pulseaudio {
-  border-radius: 0 4px 4px 0;
-  margin-right: 15px
-}
-
-#custom-power-left-end,#custom-tray-left-end,#custom-clock-icon,#custom-audio-icon {
-  background-color: @bg-light;
-  border-radius: 4px 0 0 4px;
-  border-right: none;
-  margin-bottom: 6px;
-  margin-top: 5px
-}
-
-#clock,#pulseaudio {
-  color: @fg;
-  padding-left: 0px
-}
-
 #window {
   transition: linear .3s
 }
 
-window#waybar {
-  background-color: @bg;
-  border-bottom: 1px solid @border
-}
-
-#custom-notifications,#custom-shutdown,#custom-logout,#custom-reboot,#custom-firmware,#custom-suspend,#custom-tray-collapsed,#custom-divider,#custom-clock-icon,#custom-audio-icon {
+#tray {
   background-color: @bg-light;
-  color: @icons
+  color: @fg;
+  padding-left: 10px;
+  padding-right: 10px
 }
 
-/* #custom-apps {
-  background-color: @accent;
-  color: @bg-light;
-  margin-left: 12px;
-  font-size: 20px
-} */
+#custom-left-end {
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+#custom-notifications {
+  margin-right: 15px;
+  margin-left: 0px;
+  padding-left: 5px;
+  padding-right: 5px;
+
+}
+
+#workspaces {
+  margin-right: 0px;
+  margin-left: 15px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#custom-clock-icon {
+  margin-right: 0px;
+  margin-left: 15px;
+}
+
+#clock {
+  margin-right: 15px;
+  margin-left: 0px;
+}
+
+#custom-networking,#custom-traffic,#custom-addr,#group-system,#custom-settings,#custom-memory,#custom-cpu,#custom-disk,#battery,#custom-backlight,#custom-shutdown,#custom-logout,#custom-reboot,#custom-firmware,#custom-suspend,#custom-tray-collapsed,#custom-pipewire-volume,#custom-pipewire-microphone,#custom-clock-icon,#clock {
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+#custom-networking,#custom-traffic,#custom-addr,#group-system,#custom-settings,#custom-memory,#custom-cpu,#custom-disk,#battery,#custom-backlight,#custom-pipewire-volume,#custom-pipewire-microphone,#workspaces,#custom-notifications,#group-power,#custom-shutdown,#custom-logout,#custom-reboot,#custom-firmware,#custom-suspend,#custom-tray-collapsed,#custom-divider,#custom-clock-icon,#clock {
+  background-color: @bg-light;
+  color: @icons;
+  
+}
+
+
 

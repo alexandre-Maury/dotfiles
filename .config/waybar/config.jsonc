@@ -1,235 +1,253 @@
 {
   "layer": "top",
-  "modules-left": ["custom/workspaces-left-end", "hyprland/workspaces"],
-  "modules-center": ["custom/clock-icon", "clock"],
-  "modules-right": [
-    "custom/tray-left-end", 
-    "group/sys-tray", 
-    "group/audio-backlight",
-    "group/system",
-    "custom/power-left-end", 
-    "group/power", 
-    "custom/notifications"
-  ],
-
-  "custom/notifications": {
-    "tooltip": false,
-    "format": " {icon} ",
-    "format-icons": {
-      "notification": "",
-      "none": "",
-      "dnd-notification": "",
-      "dnd-none": "",
-      "inhibited-notification": "",
-      "inhibited-none": "",
-      "dnd-inhibited-notification": "",
-      "dnd-inhibited-none": ""
-    },
-    "return-type": "json",
-    "exec-if": "command -v swaync-client",
-    "exec": "swaync-client -swb",
-    "on-click": "swaync-client -t -sw",
-    "on-click-right": "swaync-client -d -sw",
-    "escape": true
-  },
-
-  "custom/shutdown": {
-    "format": "  ",
-    "tooltip": false,
-    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -s"
-  },
-
-  "custom/reboot": {
-    "format": "  ",
-    "tooltip": false,
-    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -r"
-  },
-
-  "custom/logout": {
-    "format": "  ",
-    "tooltip": false,
-    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -l"
-  },
-
-  "custom/firmware": {
-    "format": "  ",
-    "tooltip": false,
-    "on-click": "command -v $HOME/.config/waybar/scripts/power.sh && $HOME/.config/waybar/scripts/power.sh -f"
-  },
-
-  "custom/suspend": {
-    "format": "  ",
-    "tooltip": false,
-    "on-click": "gtklock & sleep 1; systemctl suspend"
-  },
-
-  "custom/divider": {
-    "format": "|",
-    "tooltip": false
-  },
-
-  "custom/power-left-end": {
+    "modules-left": ["hyprland/workspaces","custom/left-end","group/system","custom/left-end","group/network"],
+    "modules-center": ["custom/clock-icon","clock"],
+    "modules-right": ["group/sys-tray","custom/left-end","custom/backlight","custom/left-end","custom/pipewire-microphone","custom/left-end","custom/pipewire-volume","custom/left-end","battery","custom/left-end","group/power","custom/left-end","custom/notifications"],
+  
+  "custom/left-end": {
     "format": " ",
     "tooltip": false
-  },
-
-  "group/power": {
-    "orientation": "horizontal",
-    "drawer": {
-      "transition-duration": 600,
-      "transition-left-to-right": false
+   },
+    "hyprland/workspaces": {
+      
+      "active-only": false,
+      "format": "{icon}",
+      "tooltip": false,
+      "all-outputs": true,
+      "format-icons": {
+        "active": "",
+        "default": ""
+      },
+      "persistent-workspaces": {
+        "*": 3
+      }
     },
-    "modules": [
-      "custom/shutdown",
-      "custom/firmware",
-      "custom/divider",
-      "custom/suspend",
-      "custom/divider",
-      "custom/logout",
-      "custom/divider",
-      "custom/reboot",
-      "custom/divider"
-    ]
-  },
 
-  "custom/workspaces-left-end": {
-    "format": " ",
-    "tooltip": false
-  },
-
-  "hyprland/workspaces": {
-    "active-only": false,
-    "format": "{icon}",
+  "custom/settings": {
+    "format": "  ",
     "tooltip": false,
-    "all-outputs": true,
-    "format-icons": {
-      "active": "",
-      "default": ""
-    },
-    "persistent-workspaces": {
-      "*": 5
-    }
+    
   },
 
-  "tray": {
-    "icon-size": 18,
-    "spacing": 12
-  },
-
-  "custom/tray-collapsed": {
-    "format": "󰇙  ",
-    "tooltip": false
-  },
-
-  "custom/tray-left-end": {
-    "format": " ",
-    "tooltip": false
-  },
-
-  "group/sys-tray": {
-    "orientation": "horizontal",
-    "drawer": {
-      "transition-duration": 600,
-      "transition-left-to-right": false
-    },
-    "modules": [
-      "custom/tray-collapsed",
-      "tray"
-    ]
-  },
-
-  "custom/clock-icon": {
-    "format": " ",
-    "tooltip": false
-  },
-
-  "clock": {
-    "format": "{:%I:%M:%S %p} ",
-    "interval": 1
-  },
-
-  "battery": {
-    "states": {
-      "good": 95,
-      "warning": 30,
-      "critical": 15
-    },
-    "format": "{icon}  {capacity}%",
-    "format-charging": "{capacity}% ",
-    "format-plugged": "{capacity}% ",
-    "format-icons": ["", "", "", "", ""]
-  },
-  "memory": {
-    "format": "󰍛 {usage}%",
-    "format-alt": "󰍛 {used}/{total} GiB",
-    "interval": 5
-  },
-  "cpu": {
-    "format": "󰻠 {usage}%",
-    "format-alt": "󰻠 {avg_frequency} GHz",
-    "interval": 5
-  },
-  "disk": {
-    "format": "󰋊 {usage}%",
-    "format-alt": "󰋊 {used}/{total} GiB",
+  "custom/memory": {    
+    "exec": "$HOME/.config/waybar/scripts/system.sh memory",
+    "max-length": 55,
     "interval": 5,
-    "path": "/mnt/Datos"
   },
-  "network": {
-    "format-ethernet": "<span foreground='#7aa2f7' font='14.5' rise='-1000'> </span>{ipaddr}",
-    "format-linked": "<span foreground='#7aa2f7' font='14.5' rise='-1000'> </span>{ifname} (No IP)"
+
+  "custom/cpu": {
+    "exec": "$HOME/.config/waybar/scripts/system.sh cpu",
+    "max-length": 55,
+    "interval": 5,
+  },
+
+  "custom/disk": {
+    "exec": "$HOME/.config/waybar/scripts/system.sh disk",
+    "max-length": 55,
+    "interval": 5,
   },
   "group/system": {
-    "orientation": "horizontal",
-    "modules": [
-      "battery",
-      "memory",
-      "cpu",
-      "disk",
-      "network"
-    ],
+	"orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 600,
+            "transition-right-to-left": false
+        },
+        "modules": [
+          "custom/settings",
+          "custom/divider",
+          "custom/memory",
+          "custom/divider",
+          "custom/cpu",
+          "custom/divider",
+          "custom/disk"
+        ]
+   },
+  "custom/networking": {
+    "exec": "$HOME/.config/waybar/scripts/ip.sh status",
+    "interval": 1,
     "tooltip": false,
-    "drawer": {
-      "transition-duration": 500,
-      "transition-left-to-right": false
+    "on-click": "sh -c 'nm-applet'"
+    
+  },
+  "custom/traffic": {
+    "exec": "$HOME/.config/waybar/scripts/ip.sh traffic",
+    "interval": 1,
+    "tooltip": false,
+  },
+  
+  "custom/addr": {
+    "exec": "$HOME/.config/waybar/scripts/ip.sh network",
+    "interval": 5
+  },
+
+  "group/network": {
+	"orientation": "horizontal",
+        "drawer": {
+            "transition-duration": 600,
+            "transition-right-to-left": false
+        },
+        "modules": [
+          "custom/networking",
+          "custom/divider",
+          "custom/traffic",
+          "custom/divider",
+          "custom/addr",
+
+        ]
+   },
+
+    "custom/clock-icon": {
+      "format": " ",
+      "tooltip": false
+    },
+
+    "clock": {
+      "format": "{:%I:%M:%S %p} ",
+      "interval": 1
+    },
+    
+    
+    "tray": {
+      "icon-size": 18,
+      "spacing": 12,
+      "click-to-focus": false
+    },
+    "custom/tray-collapsed": {
+      "format": " 󰇙 ",
+      "tooltip": false
+    },
+
+    "group/sys-tray": {
+      "orientation": "horizontal",
+      "drawer": {
+        "transition-duration": 600,
+        "transition-left-to-right": false
+      },
+      "modules": [
+        "custom/tray-collapsed",
+        "tray"
+      ]
+    },
+    "battery": { 
+    	"interval": 5, 
+    	"align": 0, 
+    	"rotate": 0, 
+    	"max-length": 15,
+    	//"bat": "BAT1", 
+    	//"adapter": "ACAD", 
+    	"full-at": 100, 
+    	"design-capacity": false, 
+    	"states": { "good": 95, "warning": 30, "critical": 15 }, 
+    	"format": "{icon}  {capacity}%", 
+    	"format-charging": " {capacity}%", 
+    	"format-plugged": " {capacity}%", 
+    	"format-full": "{icon} Full", 
+    	//"format-good": "", 
+    	"format-alt": "{icon} {time}", 
+    	"format-icons": ["  ", "  ", "  ", "  ", "  "], 
+    	"format-time": "{H}h {M}min", 
+    	"tooltip": false
+    }, 
+    "custom/shutdown": {
+      "format": "  ",
+      "tooltip": false,
+      "on-click": "$HOME/.config/waybar/scripts/power -s",
+      "on-click-right": "sh -c '(sleep 0.5s; wlogout --protocol layer-shell)' & disown", 
+    },
+
+    "custom/reboot": {
+      "format": "   ",
+      "tooltip": false,
+      "on-click": "$HOME/.config/waybar/scripts/power -r"
+    },
+
+    "custom/logout": {
+      "format": "  ",
+      "tooltip": false,
+      "on-click": "$HOME/.config/waybar/scripts/power -l"
+    },
+
+    "custom/firmware": {
+      "format": "  ",
+      "tooltip": false,
+      "on-click": "$HOME/.config/waybar/scripts/power -f"
+    },
+
+    "custom/suspend": {
+      "format": "  ",
+      "tooltip": false,
+      "on-click": "gtklock & sleep 1; systemctl suspend"
+    },
+
+    "custom/divider": {
+      "format": "|",
+      "tooltip": "flase"
+    },
+
+    "group/power": {
+      "orientation": "horizontal",
+      "drawer": {
+        "transition-duration": 600,
+        "transition-left-to-right": false
+      },
+      "modules": [
+        "custom/shutdown",
+        "custom/firmware",
+        "custom/divider",
+        "custom/suspend",
+        "custom/divider",
+        "custom/logout",
+        "custom/divider",
+        "custom/reboot",
+        "custom/divider"
+      ]
+    },
+    
+    "custom/pipewire-volume": {
+    	"tooltip": false,
+    	"max-length": 10,
+    	"exec": "$HOME/.config/waybar/scripts/volume.sh",
+    	"on-click": "sh -c 'touch /tmp/waybar_toggle_mute_volume'",
+    	"on-scroll-up": "sh -c 'touch /tmp/waybar_volume_up'",
+    	"on-scroll-down": "sh -c 'touch /tmp/waybar_volume_down'",
+    	"restart-interval": 10
+     },
+     "custom/pipewire-microphone": {
+        "tooltip": false,
+        "max-length": 10,
+        "exec": "$HOME/.config/waybar/scripts/microphone.sh",
+        "on-click": "sh -c 'touch /tmp/waybar_toggle_mute_microphone'",
+        "restart-interval": 10
+    },
+    "custom/backlight": {
+    	"exec": "$HOME/.config/waybar/scripts/backlight.sh",
+    	"interval": 5,
+    	"tooltip": false,
+    	"max-length": 10,
+    	"on-scroll-up": "brightnessctl set +10%",
+    	"on-scroll-down": "brightnessctl set 10%-",
+    	"on-click": "brightnessctl set 50%" // Réinitialiser à 50% au clic
+    },
+    
+    "custom/notifications": {
+      "tooltip": false,
+      "format": " {icon} ",
+      "format-icons": {
+        "notification": "",
+        "none": "",
+        "dnd-notification": "",
+        "dnd-none": "",
+        "inhibited-notification": "",
+        "inhibited-none": "",
+        "dnd-inhibited-notification": "",
+        "dnd-inhibited-none": ""
+      },
+
+      "return-type": "json",
+      "exec-if": "which swaync-client",
+      "exec": "swaync-client -swb",
+      "on-click": "swaync-client -t -sw",
+      "on-click-right": "swaync-client -d -sw",
+      "escape": true
     }
-  },
-
-
-
-  "backlight": {
-    "exec": "$HOME/.config/waybar/scripts/backlight.sh",
-    "interval": 5,
-    "tooltip": false,
-    "on-scroll-up": "brightnessctl set +10%",
-    "on-scroll-down": "brightnessctl set 10%-",
-    "on-click": "brightnessctl set 50%" // Réinitialiser à 50% au clic
-  },
-  "custom/audio-icon": {
-    "exec": "$HOME/.config/waybar/scripts/volume.sh",
-    "interval": 5,
-    "tooltip": false
-  },
-  "pulseaudio": {
-    "format": "{volume}% ",
-    "tooltip": false,
-    "scroll-step": 5,
-    "on-scroll-up": "pamixer --increase 5",
-    "on-scroll-down": "pamixer --decrease 5",
-    "on-click": "pamixer --toggle-mute"
-  },
-  "group/audio-backlight": {
-    "orientation": "horizontal",
-    "modules": [
-      "custom/audio-icon",
-      "pulseaudio",
-      "backlight"
-    ],
-    "tooltip": false,
-    "drawer": {
-      "transition-duration": 300,
-      "transition-left-to-right": false
-    }
-  }
-
 }

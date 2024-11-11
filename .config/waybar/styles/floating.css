@@ -5,8 +5,10 @@ window#waybar {
   border: none;
 }
 
-#custom-apps, #custom-notifications, #workspaces, #clock, #pulseaudio, #window, #tray, #custom-shutdown, #custom-logout, #custom-reboot, #custom-firmware, #custom-suspend, #custom-tray-collapsed, #custom-divider, #custom-power-left-end, #custom-tray-left-end,#custom-clock-icon,#custom-audio-icon {
+#custom-networking,#custom-traffic,#custom-addr,#group-system,#custom-settings,#custom-memory,#custom-cpu,#custom-disk,#custom-backlight,#custom-notifications, #workspaces, #clock, #window, #tray, #custom-shutdown, #custom-logout, #custom-reboot, #custom-firmware, #custom-suspend, #custom-tray-collapsed, #custom-divider,#custom-clock-icon,#custom-pipewire-volume,#custom-pipewire-microphone,#group-power,#battery {
  margin-top: 12px;
  margin-bottom: 0;
 }
+
+
 
