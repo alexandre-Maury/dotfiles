@@ -2,6 +2,8 @@
 
 # ==== Ajouter un thème ==== #
 
+# https://www.colorhexa.com/
+
 # Modifier la vérification des arguments
 # Définir les variables de thème
 # Ajouter un fond d'écran
@@ -15,10 +17,9 @@
 # Ajouter le thème de Neovim
 # Ajouter les messages Macchina
 
-# ==== Vérifier les arguments valides ==== #
-
-echo ''
-if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 11 ]]; then  # Vrai si l'argument n'est pas un entier entre 0 et 4
+# Vérification de l'argument
+if [[ ! $1 =~ ^[0-9]+$ ]] || [[ $1 -lt 1 ]] || [[ $1 -gt 11 ]]; then  # Vérification si l'argument est un nombre entier entre 1 et 11
+  echo ''
   echo 'Syntaxe : SetTheme <option>'
   echo 'Options:'
   echo '1.  Catppuccin-Dark'
@@ -33,6 +34,7 @@ if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 11 ]]; then  # Vrai si l'argument n'est pas u
   echo '10. Nightfox-Dark-Nord'
   echo '11. Nightfox-Light'
 
+  # Affichage d'aide si l'option '-h' ou '--help' est fournie
   if [[ $1 == '-h' ]] || [[ $1 == '--help' ]]; then
     exit 0
   else
@@ -40,28 +42,101 @@ if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 11 ]]; then  # Vrai si l'argument n'est pas u
   fi
 fi
 
+# ==== Paramètres de thème selon l'option ====
 
-# ==== Commun ==== #
+case $1 in
+  1)
+    theme='Catppuccin-Dark'
+    icons='Catppuccin-Mocha-icons.zip'  # Icônes Catppuccin-Dark
+    cursors='Catppuccin-Mocha-cursor.zip'  # Curseurs Catppuccin-Dark
+    accent='F2CDCD'
+    wall="$HOME/.config/hypr/wallpapers/Catppuccin/Dark.jpg"
+    ;;
+  2)
+    theme='Catppuccin-Dark-Macchiato'
+    icons='Catppuccin-Macchiato-icons.zip'  # Icônes Catppuccin-Dark-Macchiato
+    cursors='Catppuccin-Macchiato-cursor.zip'  # Curseurs Catppuccin-Dark-Macchiato
+    accent='F2CDCD'
+    wall="$HOME/.config/hypr/wallpapers/Catppuccin/Macchiato.jpg"
+    ;;
+  3)
+    theme='Catppuccin-Dark-Frappe'
+    icons='Catppuccin-Frappe-icons.zip'  # Icônes Catppuccin-Dark-Frappe
+    cursors='Catppuccin-Frappe-cursor.zip'  # Curseurs Catppuccin-Dark-Frappe
+    accent='F2CDCD'
+    wall="$HOME/.config/hypr/wallpapers/Catppuccin/Frappe.jpg"
+    ;;
+  4)
+    theme='Catppuccin-Light'
+    icons='Catppuccin-Latte-icons.zip'  # Icônes Catppuccin-Light
+    cursors='Catppuccin-Latte-cursor.zip'  # Curseurs Catppuccin-Light
+    accent='F2CDCD'
+    wall="$HOME/.config/hypr/wallpapers/Catppuccin/Light.jpg"
+    ;;
+  5)
+    theme='Rosepine-Dark'
+    icons='rose-pine-icons.zip'  # Icônes Rosepine-Dark
+    cursors='rose-pine-cursor.zip'  # Curseurs Rosepine-Dark
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Rose-Pine/Base.png"
+    ;;
+  6)
+    theme='Rosepine-Dark-Moon'
+    icons='rose-pine-moon-icons.zip'  # Icônes Rosepine-Dark-Moon
+    cursors='rose-pine-moon-cursor.zip'  # Curseurs Rosepine-Dark-Moon
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Rose-Pine/Moon.png"
+    ;;
+  7)
+    theme='Rosepine-Light'
+    icons='rose-pine-icons.zip'  # Icônes Rosepine-Light
+    cursors='rose-pine-cursor.zip'  # Curseurs Rosepine-Light
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Rose-Pine/Light.png"
+    ;;
+  8)
+    theme='Nightfox-Dark'
+    icons='Duskfox-icons.zip'  # Icônes Nightfox-Dark
+    cursors='rose-pine-cursor.zip'  # Curseurs Nightfox-Dark (aucune info spécifique)
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Nightfox/Dark.jpg"
+    ;;
+  9)
+    theme='Nightfox-Dark-Carbon'
+    icons='Duskfox-icons.zip'  # Icônes Nightfox-Dark-Carbon
+    cursors='rose-pine-cursor.zip'  # Curseurs Nightfox-Dark-Carbon
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Nightfox/Carbon.jpg"
+    ;;
+  10)
+    theme='Nightfox-Dark-Nord'
+    icons='Duskfox-icons.zip'  # Icônes Nightfox-Dark-Nord
+    cursors='rose-pine-cursor.zip'  # Curseurs Nightfox-Dark-Nord
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Nightfox/Nord.jpg"
+    ;;
+  11)
+    theme='Nightfox-Light'
+    icons='Duskfox-icons.zip'  # Icônes Nightfox-Light
+    cursors='rose-pine-cursor.zip'  # Curseurs Nightfox-Light
+    accent='9ccfd8'
+    wall="$HOME/.config/hypr/wallpapers/Nightfox/Light.jpg"
+    ;;
+  *)
+    echo "Option non valide. Utilisez '-h' ou '--help' pour afficher les options."
+    exit 1
+    ;;
+esac
 
-if [[ $1 -eq 1 ]]; then
-  theme='Everforest'
-  icons='Everforest-Dark'
-  cursors='everforest-cursors'
-  accent='A7C080'
-  wall="$HOME/.config/hypr/wallpapers/Everforest/Hard.jpg"
-elif [[ $1 -eq 2 ]]; then
-  theme='CatMocha'
-  icons='Papirus-Dark'
-  cursors='catppuccin-cursors'
-  accent='B4BEFE'
-  wall="$HOME/.config/hypr/wallpapers/Catppuccin/Crust.jpg"
-elif [[ $1 -eq 3 ]]; then
-  theme='Rose-Pine'
-  icons='Rose-Pine'
-  cursors='rose-pine-cursors'
-  accent='9ccfd8'
-  wall="$HOME/.config/hypr/wallpapers/Rose-Pine/Base.png"
-fi
+# Affichage du thème et autres paramètres
+echo "Thème sélectionné: $theme"
+echo "Icônes: $icons"
+echo "Curseurs: $cursors"
+echo "Accent: #$accent"
+echo "Mur de fond: $wall"
+
+# Tu peux ajouter des commandes ici pour appliquer ces paramètres sur ton environnement de bureau.
+# Par exemple, des commandes pour changer de thème, appliquer les icônes et les curseurs, ou définir le fond d'écran.
 
 prompt() {
   # Syntaxe : prompt-texte par défaut
@@ -82,20 +157,12 @@ prompt() {
   echo "$output"
 }
 
-changeWall=$(prompt "Changer le fond d'ecrans ? (y/N) " 'n')
-lightCurs=$(prompt "Activer les curseurs clairs ? (y/N) " 'n')
-colourful=$(prompt "Activer Waybar coloré ? (y/N) " 'n')
-floating=$(prompt "Activer la barre de navigation flottante ? (y/N) " 'y')
-
-
 # ==== Hyprpaper ==== #
-if [[ "$changeWall" == 'true' ]]; then
-  echo "Définir le fond d'écran..."
-  echo "preload = $wall"     > $HOME/.config/hypr/hyprpaper.conf
-  echo "wallpaper = ,$wall" >> $HOME/.config/hypr/hyprpaper.conf
-  echo "splash = false"     >> $HOME/.config/hypr/hyprpaper.conf
-  echo ''                   >> $HOME/.config/hypr/hyprpaper.conf
-fi
+echo "Définir le fond d'écran..."
+echo "preload = $wall"     > $HOME/.config/hypr/hyprpaper.conf
+echo "wallpaper = ,$wall" >> $HOME/.config/hypr/hyprpaper.conf
+echo "splash = false"     >> $HOME/.config/hypr/hyprpaper.conf
+echo ''                   >> $HOME/.config/hypr/hyprpaper.conf
 sleep 0.05
 
 
@@ -109,22 +176,12 @@ echo '/* --- Sélection des couleurs --- */'   >> $HOME/.config/waybar/style.css
 echo "@import 'colours/$theme.css';"    >> $HOME/.config/waybar/style.css
 echo ''                                 >> $HOME/.config/waybar/style.css
 echo '/* --- Sélection des styles --- */'    >> $HOME/.config/waybar/style.css
-
-if [[ "$floating" == 'true' ]]; then
-  echo "@import 'styles/floating.css';" >> $HOME/.config/waybar/style.css
-fi
-
-if [[ "$colourful" == 'true' ]]; then
-  echo "@import 'styles/colourful.css';" >> $HOME/.config/waybar/style.css
-fi
-
+echo "@import 'styles/floating.css';" >> $HOME/.config/waybar/style.css
+echo "@import 'styles/colourful.css';" >> $HOME/.config/waybar/style.css
 sleep 0.05
 
 
-# ==== Thème GTK + icônes ==== #
-if [[ "$lightCurs" == 'true' ]]; then
-  cursors=$(echo "${cursors}-light")
-fi
+
 
 echo 'Définir le thème GTK, les icônes & les curseurs...'
 if [[ -e $HOME/.config/gtk-3.0/settings.ini ]]; then
@@ -132,6 +189,7 @@ if [[ -e $HOME/.config/gtk-3.0/settings.ini ]]; then
   sed -i "s/.*gtk-icon-theme-name.*/gtk-icon-theme-name=$icons/" $HOME/.config/gtk-3.0/settings.ini
   sed -i "s/.*gtk-cursor-theme-name.*/gtk-cursor-theme-name=$cursors/" $HOME/.config/gtk-3.0/settings.ini
 fi
+
 if [[ -e $HOME/.config/gtk-4.0/settings.ini ]]; then
   sed -i "s/.*gtk-theme-name.*/gtk-theme-name=$theme/" $HOME/.config/gtk-4.0/settings.ini
   sed -i "s/.*gtk-icon-theme-name.*/gtk-icon-theme-name=$icons/" $HOME/.config/gtk-4.0/settings.ini
