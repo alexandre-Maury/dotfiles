@@ -18,20 +18,20 @@
 # ==== Vérifier les arguments valides ==== #
 
 echo ''
-if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 4 ]]; then  # Vrai si l'argument n'est pas un entier entre 0 et 4
+if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 11 ]]; then  # Vrai si l'argument n'est pas un entier entre 0 et 4
   echo 'Syntaxe : SetTheme <option>'
   echo 'Options:'
-  echo '1. Catppuccin-Dark'
-  echo '2. Catppuccin-Dark-Macchiato'
-  echo '3. Catppuccin-Dark-Frappe'
-  echo '4. Catppuccin-Light'
-  echo '5. Rosepine-Dark'
-  echo '6. Rosepine-Dark-Moon'
-  echo '7. Rosepine-Light'
-  echo '7. Nightfox-Dark'
-  echo '7. Nightfox-Dark-Carbon'
-  echo '7. Nightfox-Dark-Nord'
-  echo '7. Nightfox-Light'
+  echo '1.  Catppuccin-Dark'
+  echo '2.  Catppuccin-Dark-Macchiato'
+  echo '3.  Catppuccin-Dark-Frappe'
+  echo '4.  Catppuccin-Light'
+  echo '5.  Rosepine-Dark'
+  echo '6.  Rosepine-Dark-Moon'
+  echo '7.  Rosepine-Light'
+  echo '8.  Nightfox-Dark'
+  echo '9.  Nightfox-Dark-Carbon'
+  echo '10. Nightfox-Dark-Nord'
+  echo '11. Nightfox-Light'
 
   if [[ $1 == '-h' ]] || [[ $1 == '--help' ]]; then
     exit 0
