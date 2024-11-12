@@ -28,6 +28,11 @@ if [[ ! $1 -gt 0 ]] || [[ ! $1 -lt 4 ]]; then  # Vrai si l'argument n'est pas un
   echo '5. Rosepine-Dark'
   echo '6. Rosepine-Dark-Moon'
   echo '7. Rosepine-Light'
+  echo '7. Nightfox-Dark'
+  echo '7. Nightfox-Dark-Carbon'
+  echo '7. Nightfox-Dark-Nord'
+  echo '7. Nightfox-Light'
+
   if [[ $1 == '-h' ]] || [[ $1 == '--help' ]]; then
     exit 0
   else
