@@ -1,1 +1,1 @@
-./Everforest
+./Rose-Pine
