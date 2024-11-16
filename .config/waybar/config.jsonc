@@ -19,7 +19,7 @@
         "default": ""
       },
       "persistent-workspaces": {
-        "*": 3
+        "*": 5
       }
     },
 
