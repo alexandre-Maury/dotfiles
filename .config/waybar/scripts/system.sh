@@ -41,8 +41,8 @@ get_cpu_usage() {
 # Fonction pour obtenir l'usage du disque
 get_disk_usage() {
     # Usage du disque pour /mnt/sda (remplace avec le bon chemin si nécessaire)
-    disk_size=$(df -h /dev/sda3 | awk 'NR==2 {print $2}')
-    disk_used=$(df -h /dev/sda3 | awk 'NR==2 {print $3}')
+    disk_size=$(df -h / | awk 'NR==2 {print $2}')
+    disk_used=$(df -h / | awk 'NR==2 {print $3}')
 
     echo "󰋊 $disk_used | $disk_size"
 }
