@@ -63,20 +63,20 @@
         ]
    },
   "custom/networking": {
-    "exec": "$HOME/.config/waybar/scripts/ip.sh status",
+    "exec": "$HOME/.config/waybar/scripts/ip_checker.sh status",
     "interval": 1,
     "tooltip": false,
     "on-click": "sh -c 'nm-applet'"
     
   },
   "custom/traffic": {
-    "exec": "$HOME/.config/waybar/scripts/ip.sh traffic",
+    "exec": "$HOME/.config/waybar/scripts/ip_checker.sh traffic",
     "interval": 1,
     "tooltip": false,
   },
   
   "custom/addr": {
-    "exec": "$HOME/.config/waybar/scripts/ip.sh network",
+    "exec": "$HOME/.config/waybar/scripts/ip_checker.sh network",
     "interval": 5
   },
 
