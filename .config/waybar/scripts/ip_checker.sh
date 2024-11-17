@@ -40,7 +40,7 @@ done
 # Traiter l'option
 case "$1" in
     "status")
-        if $found_connection; then
+        if [[ "$found_connection" == true ]]; then
             # Prioriser Wi-Fi
             if [[ -n "$wifi_ip" ]]; then
                 echo "   $wifi_info  ($wifi_signal)"
@@ -53,7 +53,8 @@ case "$1" in
         ;;
 
     "network")
-        if $found_connection; then
+        if [[ "$found_connection" == true ]]; then
+
             public_ip=$(curl -s https://api.ipify.org)
 
             # Prioriser Wi-Fi
@@ -71,7 +72,7 @@ case "$1" in
         ;;
 
     "traffic")
-        if $found_connection; then
+        if [[ "$found_connection" == true ]]; then
             # Prioriser Wi-Fi
             if [[ -n "$wifi_iface" ]]; then
                 iface=$wifi_iface
@@ -124,7 +125,7 @@ case "$1" in
             fi
 
         else
-            echo "   Aucun trafic réseau détecté."
+            echo "Aucun trafic réseau détecté."
         fi
         ;;
         

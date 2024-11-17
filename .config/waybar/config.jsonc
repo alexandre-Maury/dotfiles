@@ -129,7 +129,7 @@
       ]
     },
     "battery": { 
-    	"interval": 5, 
+    	"interval": 1, 
     	"align": 0, 
     	"rotate": 0, 
     	"max-length": 15,
