@@ -8,7 +8,7 @@ program_options:
   automount:        true    # [bool] Enable automatic mounting.
   notify:           true    # [bool] Enable notifications.
   password_cache:   30
-  file_manager:     'dolphin'
+  file_manager:     'nemo'
   terminal:         'kitty'
 
 notifications:
