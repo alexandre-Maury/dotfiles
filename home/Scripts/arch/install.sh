@@ -59,9 +59,6 @@ convert_to_sectors() {
                 exit 1
                 ;;
         esac
-    elif [[ "$size" == "100%" ]]; then
-        # Si l'utilisateur a spécifié 100%, renvoie "100%" pour traiter ce cas plus tard
-        sectors="100%"
     else
         echo "Format incorrect : $size"
         exit 1
@@ -78,20 +75,14 @@ REMAINING_SPACE=$TOTAL_SIZE  # Initialiser l'espace restant
 for i in $(seq 1 $NUM_PARTITIONS); do
     # Déterminer la taille de la partition
     PART_SIZE="${PARTITION_SIZES[$i-1]}"
-    
+
     if [[ "$PART_SIZE" == "100%" ]]; then
         # Si c'est 100%, on prendra tout l'espace restant
         END=$((REMAINING_SPACE / 512))  # Utiliser tout l'espace restant en secteurs de 512 octets
     else
         # Convertir la taille de la partition en secteurs
         PART_SIZE_SECTORS=$(convert_to_sectors "$PART_SIZE")
-        
-        if [[ "$PART_SIZE_SECTORS" == "100%" ]]; then
-            # Si c'est 100%, on prend tout l'espace restant
-            END=$((REMAINING_SPACE / 512))
-        else
-            END=$((START + PART_SIZE_SECTORS))
-        fi
+        END=$((START + PART_SIZE_SECTORS))
     fi
 
     # Créer la partition de boot (si i == 1)
