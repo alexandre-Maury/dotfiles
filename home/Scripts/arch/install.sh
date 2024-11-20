@@ -85,41 +85,28 @@ for i in $(seq 1 $NUM_PARTITIONS); do
         END=$((START + PART_SIZE_SECTORS))
     fi
 
-    # Créer la partition de boot (si i == 1)
-    if [ "$i" == "1" ]; then
-        if [ "$BOOT_MODE" == "uefi" ]; then
-            # Si en mode UEFI, on crée une partition EFI de type EF00
-            sgdisk --new=$i:$START:$END --typecode=$i:EF00 "$DISK"
-        else
-            # Si en mode BIOS, on crée une partition de type Linux (8300) pour boot
-            sgdisk --new=$i:$START:$END --typecode=$i:8300 "$DISK"
-        fi
-    else
-        # Pour toutes les autres partitions, utiliser le type Linux (8300)
-        sgdisk --new=$i:$START:$END --typecode=$i:8300 "$DISK"
-    fi
+    # Créer la partition (type = 8300 pour Linux)
+    sgdisk --new=$i:$START:$END --typecode=$i:8300 "$DISK"
 
     # Réduire l'espace restant
     START=$((END + 1))  # Déplacer le point de départ pour la partition suivante
     REMAINING_SPACE=$((REMAINING_SPACE - (END - START) * 512))  # Réduire l'espace restant
+
+    # Si c'est la partition swap (repérée par la taille définie dans PARTITION_SIZES), alors créer la swap
+    if [[ "$PART_SIZE" =~ ^[0-9]+MiB$ && "$i" == "${NUM_PARTITIONS}" ]]; then
+        # C'est la dernière partition définie comme partition swap (ex : 4096MiB)
+        echo "Création de la partition swap..."
+        # Créer la partition swap (type = 8200 pour swap)
+        sgdisk --new=$((NUM_PARTITIONS + 1)):$START:+${PARTITION_SIZES[$NUM_PARTITIONS]} --typecode=$((NUM_PARTITIONS + 1)):8200 "$DISK"
+        mkswap "${DISK}p$((NUM_PARTITIONS + 1))"
+        swapon "${DISK}p$((NUM_PARTITIONS + 1))"
+        break
+    fi
 done
 
 
-# Si l'utilisateur veut une partition swap
-if [ "$USE_SWAP_PARTITION" == "true" ]; then
-    echo "Création de la partition swap..."
-    # Créer la partition swap (si nécessaire)
-    sgdisk --new=$((NUM_PARTITIONS + 1)):$START:+${PARTITION_SIZES[$NUM_PARTITIONS]}MiB --typecode=$((NUM_PARTITIONS + 1)):8200 "$DISK"
-    mkswap "${DISK}p$((NUM_PARTITIONS + 1))"
-    swapon "${DISK}p$((NUM_PARTITIONS + 1))"
-else
-    echo "Création du fichier swap..."
-    # Créer un fichier swap sur la partition / (root)
-    fallocate -l 4G /swapfile
-    chmod 600 /swapfile
-    mkswap /swapfile
-    swapon /swapfile
-fi
+
+
 
 # Formatage des partitions
 echo "Formatage de la partition /boot..."

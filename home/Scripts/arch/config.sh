@@ -4,7 +4,7 @@
 NUM_PARTITIONS=3
 
 # Taille des partitions (en Mo), par exemple: 512 pour /boot, 30000 pour / et 4096 pour swap
-PARTITION_SIZES=("512MiB" "30GiB" "100%")
+PARTITION_SIZES=("512MiB" "4096" "30GiB" "100%")
 
 # Choix de la partition de swap ou fichier swap (true/false)
 USE_SWAP_PARTITION=true
