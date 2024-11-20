@@ -1,15 +1,15 @@
 {
     "scripts": {
         "soundsLow": {
-            "exec": "playerctl --player=mpd play /usr/share/sounds/ocean/stereo/desktop-login.oga",
+            "exec": "cvlc /usr/share/sounds/ocean/stereo/desktop-login.oga",
             "urgency": "Low"
         },
         "soundsNorm": {
-            "exec": "playerctl --player=mpd play /usr/share/sounds/ocean/stereo/desktop-login.oga",
+            "exec": "cvlc /usr/share/sounds/ocean/stereo/desktop-login.oga",
             "urgency": "Normal"
         },
         "soundsCrit": {
-            "exec": "playerctl --player=mpd play /usr/share/sounds/ocean/stereo/dialog-question.oga",
+            "exec": "cvlc /usr/share/sounds/ocean/stereo/dialog-question.oga",
             "urgency": "Critical"
         }
     }
