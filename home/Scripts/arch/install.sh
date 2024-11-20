@@ -89,10 +89,10 @@ for i in $(seq 1 $NUM_PARTITIONS); do
     if [ "$i" == "1" ]; then
         if [ "$BOOT_MODE" == "uefi" ]; then
             # Si en mode UEFI, on crée une partition EFI de type EF00
-            sgdisk --new=$i:$START:+512M --typecode=$i:EF00 "$DISK"
+            sgdisk --new=$i:$START:$END --typecode=$i:EF00 "$DISK"
         else
             # Si en mode BIOS, on crée une partition de type Linux (8300) pour boot
-            sgdisk --new=$i:$START:+512M --typecode=$i:8300 "$DISK"
+            sgdisk --new=$i:$START:$END --typecode=$i:8300 "$DISK"
         fi
     else
         # Pour toutes les autres partitions, utiliser le type Linux (8300)
@@ -103,6 +103,7 @@ for i in $(seq 1 $NUM_PARTITIONS); do
     START=$((END + 1))  # Déplacer le point de départ pour la partition suivante
     REMAINING_SPACE=$((REMAINING_SPACE - (END - START) * 512))  # Réduire l'espace restant
 done
+
 
 # Si l'utilisateur veut une partition swap
 if [ "$USE_SWAP_PARTITION" == "true" ]; then
